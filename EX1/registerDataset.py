@@ -1,5 +1,10 @@
 from detectron2.data.datasets import register_pascal_voc
 from detectron2.data import DatasetCatalog, MetadataCatalog
+# import torch
+
+
+
+# print(torch.cuda.is_avaliable())
 
 def register_cityscapes_voc(name, dirname, split, year, class_names):
     register_pascal_voc(
