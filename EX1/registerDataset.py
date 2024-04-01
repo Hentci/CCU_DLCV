@@ -18,7 +18,7 @@ class_names = ('truck', 'car', 'rider', 'person', 'train', 'motorcycle', 'bicycl
 
 # register
 register_cityscapes_voc("cityscapes_train_voc", dataset_root, "trainval", "2012", class_names)
-register_cityscapes_voc("cityscapes_val_voc", dataset_root, "val", "2012", class_names)
+register_cityscapes_voc("cityscapes_test_voc", dataset_root, "test", "2012", class_names)
 
 
 def print_dicts():

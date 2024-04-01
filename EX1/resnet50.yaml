@@ -1,7 +1,7 @@
 _BASE_: "detectron2/configs/Base-RCNN-FPN.yaml"
 
 MODEL:
-  WEIGHTS: "detectron2://ImageNetPretrained/MSRA/R-50.pkl"  # 使用预训练的ResNet50权重
+  WEIGHTS: "detectron2://ImageNetPretrained/MSRA/R-50.pkl" 
   MASK_ON: False
   BACKBONE:
     NAME: "build_resnet_fpn_backbone"
@@ -11,7 +11,7 @@ MODEL:
 
 DATASETS:
   TRAIN: ("cityscapes_train_voc",)
-  TEST: ("cityscapes_val_voc",)
+  TEST: ("cityscapes_test_voc",)
   
 SOLVER:
   IMS_PER_BATCH: 2
