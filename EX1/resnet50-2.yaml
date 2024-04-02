@@ -22,7 +22,3 @@ SOLVER:
   MAX_ITER: 70000
 
 OUTPUT_DIR: "./output_second_r-50"  
-
-# 其他配置...
-
-# python -m pip install -e .

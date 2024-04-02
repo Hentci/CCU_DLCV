@@ -1,18 +1,28 @@
 MODEL:
   META_ARCHITECTURE: "GeneralizedRCNN"
   BACKBONE:
-    NAME: "build_vgg_backbone" # 假设你有一个函数来构建VGG backbone
-  VGG:
-    OUT_FEATURES: ["vgg16"] # 假设你定义了输出特征
+    NAME: "build_vgg_backbone"
   ROI_HEADS:
     NUM_CLASSES: 8
+    IN_FEATURES: ["vgg16"] # 确保这里只有一个输入特征图名称
+
   ANCHOR_GENERATOR:
-    SIZES: [[32], [64], [128], [256], [512]]
+    SIZES: [[32, 64, 128, 256, 512]] # 将所有尺寸放入一个列表中，因为只有一个特征图
     ASPECT_RATIOS: [[0.5, 1.0, 2.0]]
   RPN:
-    IN_FEATURES: ["vgg16"]
-  ROI_BOX_HEAD:
-    POOLER_RESOLUTION: 7
-    POOLER_SAMPLING_RATIO: 2
-    FEATURE_STRIDES: [16]
-    IN_FEATURES: ["vgg16"]
+    IN_FEATURES: ["vgg16"] # 同样，确保这里只有一个特征图名称
+
+DATASETS:
+  TRAIN: ("cityscapes_train_voc",)
+  TEST: ("cityscapes_test_voc",)
+
+SOLVER:
+  BASE_LR: 0.005
+  STEPS: (18000,)
+  MAX_ITER: 24000
+  IMS_PER_BATCH: 2
+
+TEST:
+  EVAL_PERIOD: 8000
+
+OUTPUT_DIR: "./output_vgg-16"
