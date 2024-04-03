@@ -6,14 +6,14 @@ import cv2
 
 
 cfg = get_cfg()
-cfg.merge_from_file("./resnet50-5.yaml")
-cfg.MODEL.WEIGHTS = "./output_seventh_r-50/model_final.pth"
+cfg.merge_from_file("./Base-RCNN-VGG-test.yaml")
+cfg.MODEL.WEIGHTS = "./output_first_vgg-16/model_final.pth"
 cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5 
 
 predictor = DefaultPredictor(cfg)
 
 
-img = cv2.imread("./frankfurt_000001_040575_leftImg8bit.jpg")
+img = cv2.imread("./frankfurt_000001_009854_leftImg8bit.jpg")
 
 # 執行推理
 outputs = predictor(img)
