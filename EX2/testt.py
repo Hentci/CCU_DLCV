@@ -46,27 +46,21 @@ def generate_image(model, prompt, save_path, image_index):
         return None
 
 
-def calculate_clip_score(clip_model, clip_processor, image, prompt):
-    # Preprocess the input image and text prompt
-    inputs = clip_processor(text=[prompt], images=image, return_tensors="pt", padding=True)
+def calculate_clip_score(clip_model, clip_processor, image, prompt, temperature=1.0):
+    # Process inputs
+    inputs = clip_processor(text=[prompt], images=[image], return_tensors="pt", padding=True)
 
-    # Forward pass through the CLIP model to get embeddings
+    # Calculate CLIP scores
     with torch.no_grad():
         outputs = clip_model(**inputs)
+        logits_per_image = outputs.logits_per_image  # Image-text similarity scores
+        print("Logits per Image:", logits_per_image)  # Debugging: Check raw logits
+        # Apply temperature scaling to logits
+        scaled_logits = logits_per_image / temperature
+        probs = scaled_logits.softmax(dim=1)  # Convert scaled logits to probabilities
+        print("Probabilities:", probs)  # Debugging: Check probabilities after softmax
 
-    # Retrieve the embeddings for the text and the image
-    image_embeddings = outputs.image_embeds  # Assuming output dict contains 'image_embeds'
-    text_embeddings = outputs.text_embeds   # Assuming output dict contains 'text_embeds'
-
-    # Normalize the embeddings to unit length
-    image_embeddings = image_embeddings / image_embeddings.norm(dim=-1, keepdim=True)
-    text_embeddings = text_embeddings / text_embeddings.norm(dim=-1, keepdim=True)
-
-    # Calculate the cosine similarity between the normalized embeddings
-    # As there's one image and one text, we can directly calculate dot product
-    cosine_similarity = (image_embeddings * text_embeddings).sum(dim=1).item()
-
-    return cosine_similarity
+    return probs[0].item()
 
 
 
@@ -91,17 +85,19 @@ def main():
     os.makedirs(save_path, exist_ok=True) 
 
     for i, prompt in enumerate(prompts):
-        image_1 = generate_image(model_1, prompt, save_path, f'{i}_stable-diffusion-v1-5')
-        image_2 = generate_image(model_2, prompt, save_path, f'{i}_stable-diffusion-v1-4')
-        image_3 = generate_image(model_3, prompt, save_path, f'{i}_stable-diffusion-xl-base-1.0')
+        # image_1 = generate_image(model_1, prompt, save_path, f'{i}_stable-diffusion-v1-5')
+        # image_2 = generate_image(model_2, prompt, save_path, f'{i}_stable-diffusion-v1-4')
+        # image_3 = generate_image(model_3, prompt, save_path, f'{i}_stable-diffusion-xl-base-1.0')
+
+        image_1 = Image.open('../imgs/prompt_0_stable-diffusion-v1-4.png')
 
         score_1 = calculate_clip_score(clip_model, clip_processor, image_1, prompt)
-        score_2 = calculate_clip_score(clip_model, clip_processor, image_2, prompt)
-        score_3 = calculate_clip_score(clip_model, clip_processor, image_3, prompt)
+        # score_2 = calculate_clip_score(clip_model, clip_processor, image_2, prompt)
+        # score_3 = calculate_clip_score(clip_model, clip_processor, image_3, prompt)
 
         print(f"CLIP Score for model 1, prompt {i}: {score_1}")
-        print(f"CLIP Score for model 2, prompt {i}: {score_2}")
-        print(f"CLIP Score for model 3, prompt {i}: {score_3}")
+        # print(f"CLIP Score for model 2, prompt {i}: {score_2}")
+        # print(f"CLIP Score for model 3, prompt {i}: {score_3}")
 
 if __name__ == "__main__":
     main()
