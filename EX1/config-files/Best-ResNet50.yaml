@@ -1,4 +1,4 @@
-_BASE_: "detectron2/configs/Base-RCNN-FPN-cityscapes.yaml"
+_BASE_: "../detectron2/configs/Base-RCNN-FPN-cityscapes.yaml"
 MODEL:
   # WEIGHTS: "detectron2://ImageNetPretrained/MSRA/R-50.pkl"
   # For better, more stable performance initialize from COCO
