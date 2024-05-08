@@ -8,7 +8,7 @@ python3 train_dreambooth.py --pretrained_model_name_or_path runwayml/stable-diff
 '''
 
 '''
-DreamBooth 主要設置
+DreamBooth 主要設置 (50epoch 可能都不夠...)
 python3 train_dreambooth.py --pretrained_model_name_or_path runwayml/stable-diffusion-v1-5 --instance_data_dir /trainingData/sage/DLCV_hentci/EX2/cityscapes_imgs --output_dir /trainingData/sage/DLCV_hentci/fine_tuned_model --instance_prompt "Image similar to Cityscapes" --num_train_epochs 300 --learning_rate 2e-6 --train_batch_size 1 
 '''
 
@@ -24,10 +24,10 @@ model_path = "/trainingData/sage/DLCV_hentci/fine_tuned_model"
 dreambooth_generator = StableDiffusionPipeline.from_pretrained(model_path)
 dreambooth_generator.safety_checker = None  
 
-# 指定要生成的图片描述
+
 prompt = "Image similar to Cityscapes"
 
-# 生成并保存图像
+
 for i in range(1000):
     # Generate the image with the prompt
     output = dreambooth_generator(prompt)
