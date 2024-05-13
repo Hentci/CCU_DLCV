@@ -18,7 +18,7 @@ CUDA_VISIBLE_DEVICE=1 python -m pytorch_fid /trainingData/sage/DLCV_hentci/EX2/c
 '''
 
 # 指定模型的路径
-model_path = "/trainingData/sage/DLCV_hentci/fine_tuned_model"
+model_path = "/trainingData/sage/DLCV_hentci/dreambooth_finetuned_model"
 
 # 加载模型
 dreambooth_generator = StableDiffusionPipeline.from_pretrained(model_path)
@@ -28,12 +28,12 @@ dreambooth_generator.safety_checker = None
 prompt = "Image similar to Cityscapes"
 
 
-for i in range(1000):
+for i in range(1):
     # Generate the image with the prompt
     output = dreambooth_generator(prompt)
     # Get the image from the output
     image = output["images"][0]  # Assuming the output is a dict with an 'images' key
     # Save the image to a file
-    image.save(f"/trainingData/sage/DLCV_hentci/img2imgs/generated_image_{i}.png")
+    image.save(f"/trainingData/sage/DLCV_hentci/img2imgs/generated_image_1001.png")
 
 
